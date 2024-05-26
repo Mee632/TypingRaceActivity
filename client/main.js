@@ -57,7 +57,6 @@ document.querySelector('#app').innerHTML = `
   </div>
 `;
 
-// Get the Start Game button
 const startGameButton = document.getElementById('StartGame');
 
 // Add a click event listener to the button
@@ -74,10 +73,10 @@ startGameButton.addEventListener('click', async () => {
     <div>
         <h2>Type Race Page</h2>
         <div id="TestText">
-            <p id="output">${words.join(' ')}</p>
+            <p id="output"></p>
         </div>
         <div id="textboxContainer">
-            <input type="text" id="myTextbox" name="myTextbox">
+            <input type="text" id="myTextbox" name="myTextbox" disabled>
         </div>
     </div>
     `;
@@ -85,18 +84,53 @@ startGameButton.addEventListener('click', async () => {
     // Replace the current content of the #app div with the new page
     document.querySelector('#app').innerHTML = TypingRacePage;
 
+    // Countdown before the race starts
+    let countdown = 3;
+    let countdownInterval = setInterval(() => {
+        document.getElementById("output").innerHTML = countdown;
+        countdown--;
+        if (countdown < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("output").innerHTML = words.join(' ');
+            document.getElementById('myTextbox').disabled = false;
+            document.getElementById('myTextbox').focus();
+        }
+    }, 1000);
+
+    let startTime;
+    let endTime;
+
     // Add a keydown event listener to the textbox
     document.getElementById('myTextbox').addEventListener('keydown', function(event) {
+        if (!startTime) {
+            startTime = new Date();
+        }
+
         // Check if the key pressed was the Enter key
         if (event.key === 'Enter') {
             // Prevent the default action to stop the form from being submitted
             event.preventDefault();
 
+            endTime = new Date();
+            let elapsedTime = (endTime - startTime) / 1000; // convert to seconds
+            let numWords = words.length;
+            let wpm = (numWords / elapsedTime) * 60;
+            let userInput = document.getElementById('myTextbox').value;
+            let correctWords = words.join(' ');
+            let correctCount = 0;
+            userInput.split(' ').forEach((word, index) => {
+                if (word === correctWords.split(' ')[index]) {
+                    correctCount++;
+                }
+            });
+            let accuracy = (correctCount / numWords) * 100;
+
             // Define the new page
             const TypeRaceResults = `
             <div>
                 <h2>New Page</h2>
-                <p>Welcome to the new page!</p>
+                <p>Your WPM: ${wpm.toFixed(2)}</p>
+                <p>Your Accuracy: ${accuracy.toFixed(2)}%</p>
             </div>
             `;
 
