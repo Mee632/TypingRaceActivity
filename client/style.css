@@ -25,7 +25,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center; /* Horizontally center children */
+  align-items: flex-start; /* Align children at the top */
   min-width: 320px;
   min-height: 100vh;
 }
@@ -35,11 +36,27 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 2em;
+  line-height: 1.1;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+#TestText {
+  padding: 1%;
+  user-select: none;
+  text-align: left;
+}
+
+#TestText p {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .logo {
@@ -74,6 +91,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+body #myTextbox {
+  width: 600px;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #242424;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -84,5 +114,17 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+    display: block;
   }
+  body #myTextbox {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+
+#textboxContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

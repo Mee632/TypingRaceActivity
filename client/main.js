@@ -50,10 +50,51 @@ async function setupDiscordSdk() {
     }
 }
 
-
 document.querySelector('#app').innerHTML = `
   <div>
-    <img src="${rocketLogo}" class="logo" alt="Discord" />
-    <h1>Hello, World!</h1>
+    <h1>TypeRaceBot</h1>
+    <button id="StartGame">Start Race</button>
   </div>
 `;
+
+// Get the Start Game button
+const startGameButton = document.getElementById('StartGame');
+
+// Add a click event listener to the button
+startGameButton.addEventListener('click', () => {
+    // Create a new page
+    const TypingRacePage = `
+    <div>
+        <h2>Type Race Page</h2>
+        <div id="TestText">
+            <p>Test</p>
+        </div>
+        <div id="textboxContainer">
+            <input type="text" id="myTextbox" name="myTextbox">
+        </div>
+    </div>
+`;
+
+    // Replace the current content of the #app div with the new page
+    document.querySelector('#app').innerHTML = TypingRacePage;
+
+    // Add a keydown event listener to the textbox
+    document.getElementById('myTextbox').addEventListener('keydown', function(event) {
+        // Check if the key pressed was the Enter key
+        if (event.key === 'Enter') {
+            // Prevent the default action to stop the form from being submitted
+            event.preventDefault();
+
+            // Define the new page
+            const TypeRaceResults = `
+            <div>
+                <h2>New Page</h2>
+                <p>Welcome to the new page!</p>
+            </div>
+            `;
+
+            // Replace the current content of the #app div with the new page
+            document.querySelector('#app').innerHTML = TypeRaceResults;
+        }
+    });
+});
