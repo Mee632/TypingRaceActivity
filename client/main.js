@@ -94,6 +94,7 @@ startGameButton.addEventListener('click', async () => {
             document.getElementById("output").innerHTML = words.join(' ');
             document.getElementById('myTextbox').disabled = false;
             document.getElementById('myTextbox').focus();
+            startTime = new Date(); // Initialize startTime when the race starts
         }
     }, 1000);
 
@@ -102,10 +103,6 @@ startGameButton.addEventListener('click', async () => {
 
     // Add a keydown event listener to the textbox
     document.getElementById('myTextbox').addEventListener('keydown', function(event) {
-        if (!startTime) {
-            startTime = new Date();
-        }
-
         // Check if the key pressed was the Enter key
         if (event.key === 'Enter') {
             // Prevent the default action to stop the form from being submitted
@@ -126,16 +123,33 @@ startGameButton.addEventListener('click', async () => {
             let accuracy = (correctCount / numWords) * 100;
 
             // Define the new page
-            const TypeRaceResults = `
+            let TypeRaceResults;
+            if (accuracy < 50) { // Set the threshold for accuracy
+                TypeRaceResults = `
+            <div>
+                <h2>New Page</h2>
+                <p>Your test is invalid due to low accuracy.</p>
+                <button id="resetButton">Reset</button>
+            </div>
+            `;
+            } else {
+                TypeRaceResults = `
             <div>
                 <h2>New Page</h2>
                 <p>Your WPM: ${wpm.toFixed(2)}</p>
                 <p>Your Accuracy: ${accuracy.toFixed(2)}%</p>
+                <button id="resetButton">Reset</button>
             </div>
             `;
+            }
 
             // Replace the current content of the #app div with the new page
             document.querySelector('#app').innerHTML = TypeRaceResults;
+
+            // Add a click event listener to the reset button
+            document.getElementById('resetButton').addEventListener('click', function() {
+                location.reload();
+            });
         }
     });
 });
