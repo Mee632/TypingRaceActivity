@@ -61,19 +61,26 @@ document.querySelector('#app').innerHTML = `
 const startGameButton = document.getElementById('StartGame');
 
 // Add a click event listener to the button
-startGameButton.addEventListener('click', () => {
-    // Create a new page
+startGameButton.addEventListener('click', async () => {
+    const response = await fetch('/FilesNeeded/randomquotes_German.json');
+    const data = await response.json();
+    let words = [];
+    for(let i = 0; i < 15; i++) {
+        let randomIndex = Math.floor(Math.random() * data.length);
+        words.push(data[randomIndex].word);
+    }
+
     const TypingRacePage = `
     <div>
         <h2>Type Race Page</h2>
         <div id="TestText">
-            <p>Test</p>
+            <p id="output">${words.join(' ')}</p>
         </div>
         <div id="textboxContainer">
             <input type="text" id="myTextbox" name="myTextbox">
         </div>
     </div>
-`;
+    `;
 
     // Replace the current content of the #app div with the new page
     document.querySelector('#app').innerHTML = TypingRacePage;

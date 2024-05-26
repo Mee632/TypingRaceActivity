@@ -8,6 +8,7 @@ const port = 3001;
 
 // Allow express to parse JSON bodies
 app.use(express.json());
+app.use(express.static('client'));
 
 app.post("/api/token", async (req, res) => {
 
